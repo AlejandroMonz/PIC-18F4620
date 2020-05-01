@@ -1,0 +1,72 @@
+CCS PCH C Compiler, Version 4.104, 5967               26-jul.-19 10:08
+
+               Filename: C:\Users\Fernando Hernandez\Desktop\LCD PIC BASICO\Primera practica\Encendido de un led.lst
+
+               ROM used: 80 bytes (0%)
+                         Largest free fragment is 65456
+               RAM used: 5 (0%) at main() level
+                         6 (0%) worst case
+               Stack:    1 locations
+
+*
+00000:  GOTO   002C
+.................... #include <18f4620.h>       //Se declara el pic que utilizaremos 
+.................... //////// Standard Header file for the PIC18F4620 device //////////////// 
+.................... #device PIC18F4620 
+.................... #list 
+....................  
+.................... #fuses HS,NOWDT            //Se declaran los fusibles hs = oscilador externo 
+.................... #use delay(clock=20000000)//Se inicia el cristal oscilador a 20MHz. 
+00004:  CLRF   FEA
+00006:  MOVLW  05
+00008:  MOVWF  FE9
+0000A:  MOVF   FEF,W
+0000C:  BZ    0028
+0000E:  MOVLW  06
+00010:  MOVWF  01
+00012:  CLRF   00
+00014:  DECFSZ 00,F
+00016:  BRA    0014
+00018:  DECFSZ 01,F
+0001A:  BRA    0012
+0001C:  MOVLW  7B
+0001E:  MOVWF  00
+00020:  DECFSZ 00,F
+00022:  BRA    0020
+00024:  DECFSZ FEF,F
+00026:  BRA    000E
+00028:  GOTO   004E (RETURN)
+.................... #define led pin_b0        //Se declara el puerto de salida del led en el puerto B0 
+.................... standard_io(b);           //Se declara el puerto b como entradas y salidas 
+.................... int A=500;                //Se declara la variable "A" que funcionara como el tiempo en ms del delay. 
+.................... void main(){       //Incia la funcion principal 
+0002C:  CLRF   FF8
+0002E:  BCF    FD0.7
+00030:  CLRF   FEA
+00032:  CLRF   FE9
+00034:  MOVLW  F4
+00036:  MOVWF  04
+00038:  MOVF   FC1,W
+0003A:  ANDLW  C0
+0003C:  IORLW  0F
+0003E:  MOVWF  FC1
+00040:  MOVLW  07
+00042:  MOVWF  FB4
+....................  
+....................    output_high(led); 
+00044:  BCF    F93.0
+00046:  BSF    F8A.0
+....................    delay_ms(A); 
+00048:  MOVFF  04,05
+0004C:  BRA    0004
+.................... } 
+0004E:  SLEEP 
+
+Configuration Fuses:
+   Word  1: C200   HS IESO FCMEN
+   Word  2: 1E1E   BROWNOUT NOWDT BORV21 PUT WDT32768
+   Word  3: 8700   CCP2C1 PBADEN LPT1OSC MCLR
+   Word  4: 0081   STVREN NODEBUG NOLVP NOXINST
+   Word  5: C00F   NOPROTECT NOCPD NOCPB
+   Word  6: E00F   NOWRT NOWRTD NOWRTC NOWRTB
+   Word  7: 400F   NOEBTR NOEBTRB
